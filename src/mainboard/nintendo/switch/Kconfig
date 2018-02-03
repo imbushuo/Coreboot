@@ -19,23 +19,15 @@ config BOARD_SPECIFIC_OPTIONS # dummy
 	def_bool y
 	select BOARD_ROMSIZE_KB_16384
 	select COMMON_CBFS_SPI_WRAPPER
-	select EC_GOOGLE_CHROMEEC
-	select EC_GOOGLE_CHROMEEC_I2C
-	select EC_GOOGLE_CHROMEEC_I2C_PROTO3
 	select MAINBOARD_HAS_NATIVE_VGA_INIT
 	select MAINBOARD_FORCE_NATIVE_VGA_INIT
 	select SPI_FLASH
 	select SPI_FLASH_WINBOND
 	select SOC_NVIDIA_TEGRA210
 	select MAINBOARD_DO_DSI_INIT
-	select MAINBOARD_HAS_CHROMEOS
 
 config BOOTBLOCK_WRAP_BCT
 	def_bool n
-
-config VBOOT
-	select EC_GOOGLE_CHROMEEC_SWITCHES
-	select VBOOT_VBNV_FLASH
 
 config MAINBOARD_DIR
 	string
@@ -75,24 +67,4 @@ config BOOT_DEVICE_SPI_FLASH_BUS
 	help
 	  Which SPI bus the boot media is connected to.
 
-config DRIVER_TPM_I2C_BUS
-	hex
-	default 0x2
-
-config DRIVER_TPM_I2C_ADDR
-	hex
-	default 0x20
-
-config EC_GOOGLE_CHROMEEC_I2C_BUS
-	hex
-	default 0x1
-
-config EC_GOOGLE_CHROMEEC_BOARDNAME
-	string
-	default "ryu"
-
-config GBB_HWID
-	string
-	depends on CHROMEOS
-	default "SMAUG TEST 2906"
 endif # BOARD_NINTENDO_SWITCH
