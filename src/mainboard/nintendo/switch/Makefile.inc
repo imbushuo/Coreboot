@@ -26,6 +26,7 @@ subdirs-y += bct
 bootblock-y += bootblock.c
 bootblock-y += pmic.c
 bootblock-y += reset.c
+bootblock-y += cbfs_switch.c
 
 verstage-y += reset.c
 
@@ -33,12 +34,14 @@ romstage-y += pmic.c
 romstage-y += reset.c
 romstage-y += romstage.c
 romstage-y += sdram_configs.c
+romstage-y += cbfs_switch.c
 
 ramstage-y += boardid.c
 ramstage-y += mainboard.c
 ramstage-y += reset.c
 ramstage-y += pmic.c
 ramstage-y += sdram_configs.c
+ramstage-y += cbfs_switch.c
 
 bootblock-y += memlayout.ld
 romstage-y += memlayout.ld

@@ -13,15 +13,17 @@
  * GNU General Public License for more details.
  */
 
+#include <console/console.h>
 #include <delay.h>
-#include <soc/addressmap.h>
 #include <device/i2c_simple.h>
+#include <soc/addressmap.h>
 #include <soc/clock.h>
 #include <soc/funitcfg.h>
 #include <soc/nvidia/tegra/i2c.h>
 #include <soc/padconfig.h>
 #include <soc/romstage.h>
 
+#include "cbfs_switch.h"
 #include "gpio.h"
 #include "pmic.h"
 
@@ -43,6 +45,10 @@ static const struct pad_config padcfgs[] = {
 void romstage_mainboard_init(void)
 {
 	//soc_configure_pads(padcfgs, ARRAY_SIZE(padcfgs));
+
+	printk(BIOS_INFO, "Switching to SDRAM backed CBFS\n");
+
+	cbfs_switch_to_sdram();
 }
 
 void mainboard_configure_pmc(void)
