@@ -1,2 +1,2 @@
-config BOARD_GOOGLE_SMAUG
-	bool "Smaug (Google Pixel C)"
+config BOARD_NINTENDO_SWITCH
+	bool "Nintendo Switch"

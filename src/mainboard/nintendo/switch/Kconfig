@@ -13,7 +13,7 @@
 ## GNU General Public License for more details.
 ##
 
-if BOARD_GOOGLE_SMAUG
+if BOARD_NINTENDO_SWITCH
 
 config BOARD_SPECIFIC_OPTIONS # dummy
 	def_bool y
@@ -36,15 +36,15 @@ config VBOOT
 
 config MAINBOARD_DIR
 	string
-	default google/smaug
+	default nintendo/switch
 
 config MAINBOARD_PART_NUMBER
 	string
-	default "Smaug"
+	default "Switch"
 
 config DRAM_SIZE_MB
 	int
-	default 2048
+	default 4096
 
 choice
 	prompt "BCT boot media"
@@ -92,4 +92,4 @@ config GBB_HWID
 	string
 	depends on CHROMEOS
 	default "SMAUG TEST 2906"
-endif # BOARD_GOOGLE_SMAUG
+endif # BOARD_NINTENDO_SWITCH
