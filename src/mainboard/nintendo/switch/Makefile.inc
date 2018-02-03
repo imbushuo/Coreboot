@@ -36,7 +36,6 @@ romstage-y += romstage.c
 romstage-y += sdram_configs.c
 romstage-y += cbfs_switch.c
 
-ramstage-y += boardid.c
 ramstage-y += mainboard.c
 ramstage-y += reset.c
 ramstage-y += pmic.c
