@@ -129,6 +129,7 @@ static struct workaround_op workaround_sequence[] = {
  */
 static void mbist_workaround(void)
 {
+return; // XXX
 	int i;
 	u32 val;
 	struct workaround_op *wa_op;
@@ -158,7 +159,7 @@ static void mbist_workaround(void)
 void main(void)
 {
 	// enable JTAG at the earliest stage
-	enable_jtag();
+	//enable_jtag();
 
 	mbist_workaround();
 

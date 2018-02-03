@@ -37,6 +37,7 @@
 #include "gpio.h"
 #include "pmic.h"
 
+#if 0
 static const struct pad_config padcfgs[] = {
 	PAD_CFG_GPIO_INPUT(USB_VBUS_EN1, PINMUX_PULL_NONE | PINMUX_PARKED |
 			   PINMUX_INPUT_ENABLE | PINMUX_LPDR | PINMUX_IO_HV),
@@ -182,12 +183,14 @@ static void powergate_unused_partitions(void)
 	for (i = 0; i < ARRAY_SIZE(partitions); i++)
 		power_gate_partition(partitions[i]);
 }
+#endif
 
 static void mainboard_init(device_t dev)
 {
-	soc_configure_pads(padcfgs, ARRAY_SIZE(padcfgs));
-	soc_configure_funits(funits, ARRAY_SIZE(funits));
+	//soc_configure_pads(padcfgs, ARRAY_SIZE(padcfgs));
+	//soc_configure_funits(funits, ARRAY_SIZE(funits));
 
+#if 0
 	/* I2C6 bus (audio, etc.) */
 	soc_configure_i2c6pad();
 	i2c_init(I2C6_BUS);
@@ -196,13 +199,14 @@ static void mainboard_init(device_t dev)
 	/* if panel needs to bringup */
 	if (display_init_required())
 		configure_display_blocks();
+#endif
 
-	powergate_unused_partitions();
+	//powergate_unused_partitions();
 }
 
 void display_startup(device_t dev)
 {
-	dsi_display_startup(dev);
+	//dsi_display_startup(dev);
 }
 
 static void mainboard_enable(device_t dev)

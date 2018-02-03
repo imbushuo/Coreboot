@@ -25,6 +25,7 @@
 #include "gpio.h"
 #include "pmic.h"
 
+#if 0
 static const struct pad_config padcfgs[] = {
 	/* AP_SYS_RESET_L - active low*/
 	PAD_CFG_GPIO_OUT1(SDMMC1_DAT0, PINMUX_PULL_UP),
@@ -37,10 +38,11 @@ static const struct pad_config padcfgs[] = {
 	/* BTN_AP_VOLU_L - active low */
 	PAD_CFG_GPIO_INPUT(SDMMC1_DAT1, PINMUX_PULL_UP),
 };
+#endif
 
 void romstage_mainboard_init(void)
 {
-	soc_configure_pads(padcfgs, ARRAY_SIZE(padcfgs));
+	//soc_configure_pads(padcfgs, ARRAY_SIZE(padcfgs));
 }
 
 void mainboard_configure_pmc(void)

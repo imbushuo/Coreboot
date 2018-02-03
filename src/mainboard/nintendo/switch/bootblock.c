@@ -35,27 +35,6 @@ static const struct pad_config pmic_pads[] = {
 	PAD_CFG_SFIO(PWR_I2C_SDA, PINMUX_INPUT_ENABLE, I2CPMU),
 };
 
-/********************** SPI Flash *****************************/
-static const struct pad_config spiflash_pads[] = {
-	/* QSPI fLash: mosi, miso, clk, cs0, hold, wp  */
-	PAD_CFG_SFIO(QSPI_IO0, PINMUX_INPUT_ENABLE | PINMUX_PULL_UP |
-		     PINMUX_DRIVE_2X, QSPI),
-	PAD_CFG_SFIO(QSPI_IO1, PINMUX_INPUT_ENABLE | PINMUX_PULL_UP |
-		     PINMUX_DRIVE_2X, QSPI),
-	PAD_CFG_SFIO(QSPI_SCK, PINMUX_INPUT_ENABLE | PINMUX_DRIVE_2X, QSPI),
-	PAD_CFG_SFIO(QSPI_CS_N, PINMUX_INPUT_ENABLE | PINMUX_DRIVE_2X, QSPI),
-	PAD_CFG_SFIO(QSPI_IO2, PINMUX_INPUT_ENABLE | PINMUX_PULL_UP |
-		     PINMUX_DRIVE_2X, QSPI),
-	PAD_CFG_SFIO(QSPI_IO3, PINMUX_INPUT_ENABLE | PINMUX_PULL_UP |
-		     PINMUX_DRIVE_2X, QSPI),
-};
-
-/********************* TPM ************************************/
-static const struct pad_config tpm_pads[] = {
-	PAD_CFG_SFIO(GEN3_I2C_SCL, PINMUX_INPUT_ENABLE, I2C3),
-	PAD_CFG_SFIO(GEN3_I2C_SDA, PINMUX_INPUT_ENABLE, I2C3),
-};
-
 /********************* EC *************************************/
 static const struct pad_config ec_i2c_pads[] = {
 	PAD_CFG_SFIO(GEN2_I2C_SCL, PINMUX_INPUT_ENABLE, I2C2),
@@ -66,10 +45,6 @@ static const struct pad_config ec_i2c_pads[] = {
 static const struct funit_cfg funits[] = {
 	/* PMIC on I2C5 (PWR_I2C* pads) at 400kHz. */
 	FUNIT_CFG(I2C5, PLLP, 400, pmic_pads, ARRAY_SIZE(pmic_pads)),
-	/* SPI flash at 24MHz on QSPI controller. */
-	FUNIT_CFG(QSPI, PLLP, 24000, spiflash_pads, ARRAY_SIZE(spiflash_pads)),
-	/* TPM on I2C3  @ 400kHz */
-	FUNIT_CFG(I2C3, PLLP, 400, tpm_pads, ARRAY_SIZE(tpm_pads)),
 	/* EC on I2C2 - pulled to 3.3V @ 100kHz */
 	FUNIT_CFG(I2C2, PLLP, 100, ec_i2c_pads, ARRAY_SIZE(ec_i2c_pads)),
 };
@@ -94,27 +69,26 @@ static void set_clock_sources(void)
 	write32(CLK_RST_REG(clk_src_uarta), PLLP << CLK_SOURCE_SHIFT);
 }
 
+#if 0
 /********************* PADs ***********************************/
 static const struct pad_config padcfgs[] = {
 	/* Board build id bits 1:0 */
 	PAD_CFG_GPIO_INPUT(GPIO_PK1, PINMUX_PULL_NONE),
 	PAD_CFG_GPIO_INPUT(GPIO_PK0, PINMUX_PULL_NONE),
 };
+#endif
 
 void bootblock_mainboard_init(void)
 {
 	set_clock_sources();
 
 	/* Set up the pads required to load romstage. */
-	soc_configure_pads(padcfgs, ARRAY_SIZE(padcfgs));
+	// XXX soc_configure_pads(padcfgs, ARRAY_SIZE(padcfgs));
 	soc_configure_funits(funits, ARRAY_SIZE(funits));
 
 	/* PMIC */
 	i2c_init(I2CPWR_BUS);
 	pmic_init(I2CPWR_BUS);
-
-	/* TPM */
-	i2c_init(I2C3_BUS);
 
 	/* EC */
 	i2c_init(I2C2_BUS);
