@@ -14,41 +14,35 @@
  * GNU General Public License for more details.
  */
 
+#include <arch/io.h>
 #include <console/console.h>
 #include <soc/sdram_configs.h>
 
-static struct sdram_params sdram_configs[] = {
-#include "bct/sdram-unused.inc"				/* ram_code = 0000 */
-#include "bct/sdram-unused.inc"				/* ram_code = 0001 */
-#include "bct/sdram-samsung-3GB-204.inc"		/* ram_code = 0010 */
-#include "bct/sdram-samsung-4GB-204.inc"		/* ram_code = 0011 */
-#include "bct/sdram-unused.inc"				/* ram_code = 0100 */
-#include "bct/sdram-unused.inc"				/* ram_code = 0101 */
-#include "bct/sdram-unused.inc"				/* ram_code = 0110 */
-#include "bct/sdram-unused.inc"				/* ram_code = 0111 */
-#include "bct/sdram-unused.inc"				/* ram_code = 1000 */
-#include "bct/sdram-unused.inc"				/* ram_code = 1001 */
-#include "bct/sdram-unused.inc"				/* ram_code = 1010 */
-#include "bct/sdram-unused.inc"				/* ram_code = 1011 */
-#include "bct/sdram-unused.inc"				/* ram_code = 1100 */
-#include "bct/sdram-unused.inc"				/* ram_code = 1101 */
-#include "bct/sdram-unused.inc"				/* ram_code = 1110 */
-#include "bct/sdram-unused.inc"				/* ram_code = 1111 */
+static const struct sdram_params sdram_configs[] = {
+#include "bct/sdram-nintendo-switch-0.inc"		/* ram_code = 0000 */
+#include "bct/sdram-nintendo-switch-1.inc"		/* ram_code = 0001 */
+#include "bct/sdram-nintendo-switch-2.inc"		/* ram_code = 0010 */
+#include "bct/sdram-nintendo-switch-3.inc"		/* ram_code = 0011 */
 };
+
+#define TEGRA_FUSE_BASE		((void *) 0x7000f800)
+#define  FUSE_RESERVED_ODM4	0x1d8
+
+static uint32_t switch_sdram_get_id(void)
+{
+	return (read32(TEGRA_FUSE_BASE + FUSE_RESERVED_ODM4) & 0x38) >> 3;
+}
 
 const struct sdram_params *get_sdram_config()
 {
-	uint32_t ramcode = sdram_get_ram_code();
-	/*
-	 * If we need to apply some special hacks to RAMCODE mapping (ex, by
-	 * board_id), do that now.
-	 */
+	uint32_t id = switch_sdram_get_id();
 
-	printk(BIOS_SPEW, "%s: RAMCODE=%d\n", __func__, ramcode);
-	if (ramcode >= sizeof(sdram_configs) / sizeof(sdram_configs[0]) ||
-	    sdram_configs[ramcode].MemoryType == NvBootMemoryType_Unused) {
-		die("Invalid RAMCODE.");
+	printk(BIOS_INFO, "Fuse SDRAM ID: %d\n", id);
+
+	if (id >= ARRAY_SIZE(sdram_configs) ||
+		sdram_configs[id].MemoryType == NvBootMemoryType_Unused) {
+		die("Invalid SDRAM ID.");
 	}
 
-	return &sdram_configs[ramcode];
+	return &sdram_configs[id];
 }
