@@ -11,7 +11,7 @@
 	url = ../vboot.git
 [submodule "arm-trusted-firmware"]
 	path = 3rdparty/arm-trusted-firmware
-	url = ../arm-trusted-firmware.git
+	url = git@gitlab.com:dhewg/arm-trusted-firmware.git
 [submodule "3rdparty/chromeec"]
 	path = 3rdparty/chromeec
 	url = ../chrome-ec.git
