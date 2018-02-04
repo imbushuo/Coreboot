@@ -18,6 +18,7 @@ bct-cfg-y += sdram-nintendo-switch-0.cfg
 bct-cfg-y += sdram-nintendo-switch-1.cfg
 bct-cfg-y += sdram-nintendo-switch-2.cfg
 bct-cfg-y += sdram-nintendo-switch-3.cfg
+bct-cfg-y += sdram-nintendo-switch-4.cfg
 
 # Note when SDRAM config (sdram-*.cfg) files are changed, we have to regenerate
 # the include files (sdram-*.inc) by running "./cfg2inc.sh sdram-*.cfg".

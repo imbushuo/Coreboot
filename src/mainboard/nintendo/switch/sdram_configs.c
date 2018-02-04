@@ -23,6 +23,7 @@ static const struct sdram_params sdram_configs[] = {
 #include "bct/sdram-nintendo-switch-1.inc"		/* ram_code = 0001 */
 #include "bct/sdram-nintendo-switch-2.inc"		/* ram_code = 0010 */
 #include "bct/sdram-nintendo-switch-3.inc"		/* ram_code = 0011 */
+#include "bct/sdram-nintendo-switch-4.inc"              /* ram_code = 0100 */
 };
 
 #define TEGRA_FUSE_BASE		((void *) 0x7000f800)
