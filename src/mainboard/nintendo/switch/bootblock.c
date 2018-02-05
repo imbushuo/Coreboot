@@ -80,6 +80,8 @@ static const struct pad_config padcfgs[] = {
 
 void bootblock_mainboard_init(void)
 {
+	struct tegra_i2c_bus_info *info = &tegra_i2c_info[I2CPWR_BUS];
+
 	set_clock_sources();
 
 	/* Set up the pads required to load romstage. */
@@ -87,6 +89,7 @@ void bootblock_mainboard_init(void)
 	soc_configure_funits(funits, ARRAY_SIZE(funits));
 
 	/* PMIC */
+	info->reset_func(info->reset_bit);
 	i2c_init(I2CPWR_BUS);
 	pmic_init(I2CPWR_BUS);
 
