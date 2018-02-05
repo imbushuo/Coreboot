@@ -15,9 +15,10 @@
 
 #include <arch/io.h>
 #include <console/console.h>
+#include <soc/addressmap.h>
 #include <reset.h>
 
-#define PMC_CTLR_BASE		(void *)(0x7000e400)
+#define PMC_CTLR_BASE		((void *)(TEGRA_PMC_BASE))
 #define PMC_CNTRL		0x000
 #define  PMC_CNTRL_MAIN_RST	(1 << 4)
 #define PMC_SCRATCH0		0x050

@@ -16,6 +16,7 @@
 
 #include <arch/io.h>
 #include <console/console.h>
+#include <soc/addressmap.h>
 #include <soc/sdram_configs.h>
 
 static const struct sdram_params sdram_configs[] = {
@@ -26,7 +27,7 @@ static const struct sdram_params sdram_configs[] = {
 #include "bct/sdram-nintendo-switch-4.inc"              /* ram_code = 0100 */
 };
 
-#define TEGRA_FUSE_BASE		((void *) 0x7000f800)
+#define TEGRA_FUSE_BASE		((void *)TEGRA_FUSE_BASE)
 #define  FUSE_RESERVED_ODM4	0x1d8
 
 static uint32_t switch_sdram_get_id(void)

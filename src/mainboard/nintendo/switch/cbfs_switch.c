@@ -19,12 +19,12 @@
 
 #include "cbfs_switch.h"
 
-#define UINT32TOBUF(val, x, o) \
+#define UINT32TOBUF(b, o, val) \
 	do { \
-		x[o + 0] = (val >> 24) & 0xff; \
-		x[o + 1] = (val >> 16) & 0xff; \
-		x[o + 2] = (val >> 8) & 0xff; \
-		x[o + 3] = val & 0xff; \
+		b[o + 0] = (val >> 24) & 0xff; \
+		b[o + 1] = (val >> 16) & 0xff; \
+		b[o + 2] = (val >> 8) & 0xff; \
+		b[o + 3] = val & 0xff; \
 	} while (0);
 
 extern u8 _usb_bounce[];
@@ -75,8 +75,8 @@ static ssize_t usb_readat(const struct region_device *rd, void *b,
 	size_t left = size;
 	size_t chunk;
 
-	UINT32TOBUF(offset, _usb_bounce, 0);
-	UINT32TOBUF(size, _usb_bounce, 4);
+	UINT32TOBUF(_usb_bounce, 0, offset);
+	UINT32TOBUF(_usb_bounce, 4, size);
 	rom_sendbuf(_usb_bounce, 8);
 
 	while (left > 0) {
@@ -114,7 +114,7 @@ static bool rom_in_sdram = false;
 
 void cbfs_switch_to_sdram(void)
 {
-	usb_readat(NULL, _rom_copy, 0, CONFIG_ROM_SIZE);
+	usb_readat(&mdev_usb.rdev, _rom_copy, 0, CONFIG_ROM_SIZE);
 
 	memset(_usb_bounce, 0, 8);
 	rom_sendbuf(_usb_bounce, 8);
