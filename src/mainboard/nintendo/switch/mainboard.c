@@ -37,12 +37,12 @@
 #include "gpio.h"
 #include "pmic.h"
 
-#if 0
 static const struct pad_config padcfgs[] = {
 	PAD_CFG_GPIO_INPUT(USB_VBUS_EN1, PINMUX_PULL_NONE | PINMUX_PARKED |
 			   PINMUX_INPUT_ENABLE | PINMUX_LPDR | PINMUX_IO_HV),
 };
 
+#if 0
 static const struct pad_config audio_codec_pads[] = {
 	/* GPIO_X1_AUD(BB3) is CODEC_RST_L and DMIC1_DAT(E1) is AUDIO_ENABLE */
 	PAD_CFG_GPIO_OUT1(GPIO_X1_AUD, PINMUX_PULL_DOWN),
@@ -63,14 +63,16 @@ static const struct funit_cfg audio_funit[] = {
 	/* We need 1.5MHz for I2S1. So we use CLK_M */
 	FUNIT_CFG(I2S1, CLK_M, 1500, i2s1_pad, ARRAY_SIZE(i2s1_pad)),
 };
+#endif
 
 static const struct funit_cfg funits[] = {
 	FUNIT_CFG_USB(USBD),
 	FUNIT_CFG(SDMMC4, PLLP, 48000, NULL, 0),
 	/* I2C6 for audio, temp sensor, etc. Enable codec via GPIOs/muxes */
-	FUNIT_CFG(I2C6, PLLP, 400, audio_codec_pads, ARRAY_SIZE(audio_codec_pads)),
+	//FUNIT_CFG(I2C6, PLLP, 400, audio_codec_pads, ARRAY_SIZE(audio_codec_pads)),
 };
 
+#if 0
 /* Audio init: clocks and enables/resets */
 static void setup_audio(void)
 {
@@ -165,6 +167,7 @@ static int configure_display_blocks(void)
 
 	return 0;
 }
+#endif
 
 static void powergate_unused_partitions(void)
 {
@@ -183,12 +186,11 @@ static void powergate_unused_partitions(void)
 	for (i = 0; i < ARRAY_SIZE(partitions); i++)
 		power_gate_partition(partitions[i]);
 }
-#endif
 
 static void mainboard_init(device_t dev)
 {
-	//soc_configure_pads(padcfgs, ARRAY_SIZE(padcfgs));
-	//soc_configure_funits(funits, ARRAY_SIZE(funits));
+	soc_configure_pads(padcfgs, ARRAY_SIZE(padcfgs));
+	soc_configure_funits(funits, ARRAY_SIZE(funits));
 
 #if 0
 	/* I2C6 bus (audio, etc.) */
@@ -201,7 +203,7 @@ static void mainboard_init(device_t dev)
 		configure_display_blocks();
 #endif
 
-	//powergate_unused_partitions();
+	powergate_unused_partitions();
 }
 
 void display_startup(device_t dev)
