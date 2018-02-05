@@ -35,18 +35,10 @@ static const struct pad_config pmic_pads[] = {
 	PAD_CFG_SFIO(PWR_I2C_SDA, PINMUX_INPUT_ENABLE, I2CPMU),
 };
 
-/********************* EC *************************************/
-static const struct pad_config ec_i2c_pads[] = {
-	PAD_CFG_SFIO(GEN2_I2C_SCL, PINMUX_INPUT_ENABLE, I2C2),
-	PAD_CFG_SFIO(GEN2_I2C_SDA, PINMUX_INPUT_ENABLE, I2C2),
-};
-
 /********************* Funits *********************************/
 static const struct funit_cfg funits[] = {
 	/* PMIC on I2C5 (PWR_I2C* pads) at 400kHz. */
 	FUNIT_CFG(I2C5, PLLP, 400, pmic_pads, ARRAY_SIZE(pmic_pads)),
-	/* EC on I2C2 - pulled to 3.3V @ 100kHz */
-	FUNIT_CFG(I2C2, PLLP, 100, ec_i2c_pads, ARRAY_SIZE(ec_i2c_pads)),
 };
 
 /********************* UART ***********************************/
@@ -92,9 +84,6 @@ void bootblock_mainboard_init(void)
 	info->reset_func(info->reset_bit);
 	i2c_init(I2CPWR_BUS);
 	pmic_init(I2CPWR_BUS);
-
-	/* EC */
-	i2c_init(I2C2_BUS);
 
 	/*
 	 * Set power detect override for GPIO, audio & sdmmc3 rails.
