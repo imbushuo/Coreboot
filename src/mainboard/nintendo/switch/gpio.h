@@ -29,8 +29,8 @@ enum {
 	/* Panel related GPIOs */
 	LCD_EN			= GPIO(V1),
 	LCD_RST_L		= GPIO(V2),
-	EN_VDD18_LCD		= GPIO(V3),
-	EN_VDD_LCD		= GPIO(V4),
+	EN_VDD18_LCD		= GPIO(I0),
+	EN_VDD_LCD		= GPIO(I1),
 };
 
 #endif /* __MAINBOARD_NINTENDO_SWITCH_CBFS_GPIO_H__ */

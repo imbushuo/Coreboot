@@ -98,6 +98,7 @@ static void setup_audio(void)
 	soc_configure_ape();
 	clock_enable_audio();
 }
+#endif
 
 static const struct pad_config lcd_gpio_padcfgs[] = {
 	/* LCD_EN */
@@ -167,7 +168,6 @@ static int configure_display_blocks(void)
 
 	return 0;
 }
-#endif
 
 static void powergate_unused_partitions(void)
 {
@@ -197,18 +197,18 @@ static void mainboard_init(device_t dev)
 	soc_configure_i2c6pad();
 	i2c_init(I2C6_BUS);
 	setup_audio();
+#endif
 
 	/* if panel needs to bringup */
 	if (display_init_required())
 		configure_display_blocks();
-#endif
 
 	powergate_unused_partitions();
 }
 
 void display_startup(device_t dev)
 {
-	//dsi_display_startup(dev);
+	dsi_display_startup(dev);
 }
 
 static void mainboard_enable(device_t dev)
