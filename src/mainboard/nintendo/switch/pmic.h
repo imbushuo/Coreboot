@@ -14,8 +14,8 @@
  * GNU General Public License for more details.
  */
 
-#ifndef __MAINBOARD_GOOGLE_FOSTER_PMIC_H__
-#define __MAINBOARD_GOOGLE_FOSTER_PMIC_H__
+#ifndef __MAINBOARD_NINTENDO_SWITCH_CBFS_PMIC_H__
+#define __MAINBOARD_NINTENDO_SWITCH_CBFS_PMIC_H__
 
 #define MAX77620_SD0_REG		0x16
 #define MAX77620_SD1_REG		0x17
@@ -75,4 +75,4 @@ void pmic_init(unsigned bus);
 void pmic_write_reg_77620(unsigned bus, uint8_t reg, uint8_t val,
 					int delay);
 
-#endif /* __MAINBOARD_GOOGLE_FOSTER_PMIC_H__ */
+#endif /* __MAINBOARD_NINTENDO_SWITCH_CBFS_PMIC_H__ */

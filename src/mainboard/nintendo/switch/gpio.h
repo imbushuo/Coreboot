@@ -13,8 +13,8 @@
  * GNU General Public License for more details.
  */
 
-#ifndef __MAINBOARD_GOOGLE_SMAUG_GPIO_H__
-#define __MAINBOARD_GOOGLE_SMAUG_GPIO_H__
+#ifndef __MAINBOARD_NINTENDO_SWITCH_CBFS_GPIO_H__
+#define __MAINBOARD_NINTENDO_SWITCH_CBFS_GPIO_H__
 
 #include <gpio.h>
 
@@ -33,4 +33,4 @@ enum {
 	EN_VDD_LCD		= GPIO(V4),
 };
 
-#endif /* __MAINBOARD_GOOGLE_SMAUG_GPIO_H__ */
+#endif /* __MAINBOARD_NINTENDO_SWITCH_CBFS_GPIO_H__ */
