@@ -106,9 +106,9 @@ static const struct pad_config lcd_gpio_padcfgs[] = {
 	/* LCD_RST_L */
 	PAD_CFG_GPIO_OUT0(LCD_RST, PINMUX_PULL_UP),
 	/* EN_VDD_LCD */
-	PAD_CFG_GPIO_OUT0(LCD_GPIO2, PINMUX_PULL_NONE),
+	PAD_CFG_GPIO_OUT0(NFC_EN, PINMUX_PULL_NONE),
 	/* EN_VDD18_LCD */
-	PAD_CFG_GPIO_OUT0(LCD_GPIO1, PINMUX_PULL_NONE),
+	PAD_CFG_GPIO_OUT0(NFC_INT, PINMUX_PULL_NONE),
 };
 
 static void configure_display_clocks(void)
