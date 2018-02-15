@@ -61,23 +61,12 @@ static void set_clock_sources(void)
 	write32(CLK_RST_REG(clk_src_uarta), PLLP << CLK_SOURCE_SHIFT);
 }
 
-#if 0
-/********************* PADs ***********************************/
-static const struct pad_config padcfgs[] = {
-	/* Board build id bits 1:0 */
-	PAD_CFG_GPIO_INPUT(GPIO_PK1, PINMUX_PULL_NONE),
-	PAD_CFG_GPIO_INPUT(GPIO_PK0, PINMUX_PULL_NONE),
-};
-#endif
-
 void bootblock_mainboard_init(void)
 {
 	struct tegra_i2c_bus_info *info = &tegra_i2c_info[I2CPWR_BUS];
 
 	set_clock_sources();
 
-	/* Set up the pads required to load romstage. */
-	// XXX soc_configure_pads(padcfgs, ARRAY_SIZE(padcfgs));
 	soc_configure_funits(funits, ARRAY_SIZE(funits));
 
 	/* PMIC */
