@@ -158,7 +158,7 @@ static void mbist_workaround(void)
 void main(void)
 {
 	// enable JTAG at the earliest stage
-	//enable_jtag();
+	enable_jtag();
 
 	mbist_workaround();
 
