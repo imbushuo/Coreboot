@@ -32,27 +32,27 @@ ramstage-y += storage.c
 
 # Determine the type of controller being used
 ifeq ($(CONFIG_SDHCI_CONTROLLER),y)
-#bootblock-y += pci_sdhci.c
+bootblock-y += pci_sdhci.c
 bootblock-y += sdhci.c
 bootblock-$(CONFIG_SDHCI_ADMA_IN_BOOTBLOCK) += sdhci_adma.c
 bootblock-y += sdhci_display.c
 
-#verstage-y += pci_sdhci.c
+verstage-y += pci_sdhci.c
 verstage-y += sdhci.c
 verstage-$(CONFIG_SDHCI_ADMA_IN_VERSTAGE) += sdhci_adma.c
 verstage-y += sdhci_display.c
 
-#romstage-y += pci_sdhci.c
+romstage-y += pci_sdhci.c
 romstage-y += sdhci.c
 romstage-$(CONFIG_SDHCI_ADMA_IN_ROMSTAGE) += sdhci_adma.c
 romstage-y += sdhci_display.c
 
-#postcar-y += pci_sdhci.c
+postcar-y += pci_sdhci.c
 postcar-y += sdhci.c
 postcar-y += sdhci_adma.c
 postcar-y += sdhci_display.c
 
-#ramstage-y += pci_sdhci.c
+ramstage-y += pci_sdhci.c
 ramstage-y += sdhci.c
 ramstage-y += sdhci_adma.c
 ramstage-y += sdhci_display.c
