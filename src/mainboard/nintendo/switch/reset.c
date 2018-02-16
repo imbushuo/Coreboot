@@ -27,7 +27,7 @@
 void do_hard_reset(void)
 {
 	uint32_t val;
-	
+
 	val = read32(PMC_CTLR_BASE + PMC_SCRATCH0);
 	val |= PMC_SCRATCH0_MODE_RCM;
 	write32(PMC_CTLR_BASE + PMC_SCRATCH0, val);
