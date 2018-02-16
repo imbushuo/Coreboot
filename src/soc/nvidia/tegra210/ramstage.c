@@ -16,6 +16,7 @@
 #include <arch/clock.h>
 #include <arch/cpu.h>
 #include <arch/stages.h>
+#include <cbmem.h>
 #include <gic.h>
 #include <soc/addressmap.h>
 #include <soc/clock.h>
@@ -67,6 +68,9 @@ void ramstage_entry(void)
 	tegra210_mmu_init();
 
 	clock_init_arm_generic_timer();
+
+	/* Needed to store MTC data */
+	cbmem_initialize();
 
 	if (tegra210_run_mtc() != 0)
 		printk(BIOS_ERR, "MTC: No training data.\n");

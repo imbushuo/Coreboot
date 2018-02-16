@@ -162,4 +162,18 @@ cbfs-files-$(CONFIG_HAVE_MTC) += $(MTC_FILE_CBFS)
 $(MTC_FILE_CBFS)-file := $(MTC_FILE)
 $(MTC_FILE_CBFS)-type := raw
 
+ifeq ($(CONFIG_HAVE_MTC_TABLES),y)
+    MTC_TABLES_DIRECTORY = $(call strip_quotes,$(CONFIG_MTC_TABLES_DIRECTORY))
+
+    define MTC_CBFS_template =
+        cbfs-files-y += $(1)
+        $(1)-file := $(MTC_TABLES_DIRECTORY)/$(1)
+        $(1)-type := raw
+    endef
+
+    MTC_TABLE_NAMES = $(notdir $(wildcard $(MTC_TABLES_DIRECTORY)/tegra_mtc_table_*.bin))
+
+    $(foreach table,$(MTC_TABLE_NAMES),$(eval $(call MTC_CBFS_template,$(table))))
+endif
+
 endif

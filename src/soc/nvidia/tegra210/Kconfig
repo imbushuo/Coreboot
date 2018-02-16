@@ -142,6 +142,24 @@ config MTC_ADDRESS
 	  The DRAM location where MTC firmware to be loaded in. This location
 	  needs to be consistent with the location defined in tegra_mtc.ld
 
+config HAVE_MTC_TABLES
+	bool "Add external Memory controller Training Code tables"
+	default n
+	depends on USE_BLOBS
+	help
+	  Select this option to add external emc training tables
+
+if HAVE_MTC_TABLES
+
+config MTC_TABLES_DIRECTORY
+	string "Directory where MTC table files are located"
+	default "mtc_tables"
+	help
+	  Path to directory where MTC tables files are located. They should be
+	  named tegra_mtc_table_<ram_code>.bin.
+
+endif # HAVE_MTC_TABLES
+
 endif # HAVE_MTC
 
 endif # SOC_NVIDIA_TEGRA210

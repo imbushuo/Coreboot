@@ -30,7 +30,7 @@ static const struct sdram_params sdram_configs[] = {
 #define FUSE_BASE		((void *)TEGRA_FUSE_BASE)
 #define  FUSE_RESERVED_ODM4	0x1d8
 
-static uint32_t switch_sdram_get_id(void)
+uint32_t switch_sdram_get_id(void)
 {
 	return (read32(FUSE_BASE + FUSE_RESERVED_ODM4) & 0x38) >> 3;
 }
@@ -47,4 +47,9 @@ const struct sdram_params *get_sdram_config()
 	}
 
 	return &sdram_configs[id];
+}
+
+uint32_t ram_code(void)
+{
+	return switch_sdram_get_id();
 }

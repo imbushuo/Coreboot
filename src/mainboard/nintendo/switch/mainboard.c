@@ -220,3 +220,8 @@ struct chip_operations mainboard_ops = {
 	.name   = "switch",
 	.enable_dev = mainboard_enable,
 };
+
+void lb_board(struct lb_header *header)
+{
+	soc_add_mtc(header);
+}
