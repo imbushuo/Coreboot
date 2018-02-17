@@ -15,6 +15,7 @@
  */
 
 #include <arch/io.h>
+#include <boardid.h>
 #include <console/console.h>
 #include <soc/addressmap.h>
 #include <soc/sdram_configs.h>
@@ -30,7 +31,7 @@ static const struct sdram_params sdram_configs[] = {
 #define FUSE_BASE		((void *)TEGRA_FUSE_BASE)
 #define  FUSE_RESERVED_ODM4	0x1d8
 
-uint32_t switch_sdram_get_id(void)
+static uint32_t switch_sdram_get_id(void)
 {
 	return (read32(FUSE_BASE + FUSE_RESERVED_ODM4) & 0x38) >> 3;
 }
