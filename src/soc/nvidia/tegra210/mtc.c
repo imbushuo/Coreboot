@@ -146,8 +146,10 @@ int tegra210_run_mtc(void)
 	struct cbfsf mtc_file;
 
 	void * const mtc = (void *)(uintptr_t)CONFIG_MTC_ADDRESS;
+#if !IS_ENABLED(CONFIG_HAVE_MTC_TABLES)
 	void *dvfs_table;
 	size_t (*mtc_fw)(void **dvfs_table) = (void *)mtc;
+#endif
 
 	if (cbfs_boot_locate(&mtc_file, "tegra_mtc.bin", NULL)) {
 		printk(BIOS_ERR, "MTC file not found: tegra_mtc.bin\n");
