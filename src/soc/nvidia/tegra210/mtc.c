@@ -14,6 +14,7 @@
  */
 
 #include <arch/io.h>
+#include <arch/lib_helpers.h>
 #include <cbfs.h>
 #include <cbmem.h>
 #include <console/console.h>
@@ -44,6 +45,9 @@ static int train_all(void *mtc)
 	struct region_device fh;
 	struct cbfsf mtc_file;
 	int ret = 0;
+
+	raw_write_cptr_el3(0);
+	raw_write_cpacr_el1(3 << 20);
 
 	snprintf(filename, sizeof(filename), "tegra_mtc_table_%d.bin", ram_code());
 
@@ -97,6 +101,7 @@ static int train_all(void *mtc)
 	printk(BIOS_INFO, "MTC: running training\n");
 
 	for (int i = 0; i < entries; i++) {
+		if (i == boot_index) continue;
 		printk(BIOS_INFO, "MTC: Training %d kHz -> %d kHz\n",
 			   table[boot_index].rate, table[i].rate);
 		ret = train_one(0, table[i].rate, table[boot_index].rate,
