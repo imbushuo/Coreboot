@@ -1,6 +1,7 @@
 /*
  * This file is part of the coreboot project.
  *
+ * Copyright 2018 Andre Heider <a.heider@gmail.com>
  * Copyright 2015 Google Inc.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -24,6 +25,7 @@
 #define PMC_SCRATCH0		0x050
 #define  PMC_SCRATCH0_MODE_RCM	(1 << 1)
 
+/* We started with RCM, and that's where we go back again. */
 void do_hard_reset(void)
 {
 	uint32_t val;
@@ -37,6 +39,7 @@ void do_hard_reset(void)
 	write32(PMC_CTLR_BASE + PMC_CNTRL, val);
 }
 
+/* Make die() go back to RCM too. */
 void die_notify(void)
 {
 	do_hard_reset();

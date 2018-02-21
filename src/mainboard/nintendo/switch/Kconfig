@@ -1,7 +1,7 @@
 ##
 ## This file is part of the coreboot project.
 ##
-## Copyright 2015 Google Inc.
+## Copyright 2018 Andre Heider <a.heider@gmail.com>
 ##
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -15,7 +15,7 @@
 
 if BOARD_NINTENDO_SWITCH
 
-config BOARD_SPECIFIC_OPTIONS # dummy
+config BOARD_SPECIFIC_OPTIONS
 	def_bool y
 	select BOARD_ROMSIZE_KB_16384
 	select MAINBOARD_HAS_NATIVE_VGA_INIT
@@ -23,7 +23,7 @@ config BOARD_SPECIFIC_OPTIONS # dummy
 	select SOC_NVIDIA_TEGRA210
 	select MAINBOARD_DO_DSI_INIT
 
-config BOOTBLOCK_WRAP_BCT
+config BCT_BOOT
 	def_bool n
 
 config MAINBOARD_DIR

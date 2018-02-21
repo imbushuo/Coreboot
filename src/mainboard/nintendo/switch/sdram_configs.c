@@ -1,6 +1,7 @@
 /*
  * This file is part of the coreboot project.
  *
+ * Copyright 2018 Andre Heider <a.heider@gmail.com>
  * Copyright 2014 Google Inc.
  * Copyright (c) 2015, NVIDIA CORPORATION.  All rights reserved.
  *
@@ -33,7 +34,7 @@ static const struct sdram_params sdram_configs[] = {
 
 static uint32_t switch_sdram_get_id(void)
 {
-	return (read32(FUSE_BASE + FUSE_RESERVED_ODM4) & 0x38) >> 3;
+	return (read32(FUSE_BASE + FUSE_RESERVED_ODM4) >> 3) & 7;
 }
 
 const struct sdram_params *get_sdram_config()

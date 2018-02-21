@@ -19,23 +19,18 @@
 
 #include "cbfs_switch.h"
 
-#define UINT32TOBUF(b, o, val) \
-	do { \
-		b[o + 0] = (val >> 24) & 0xff; \
-		b[o + 1] = (val >> 16) & 0xff; \
-		b[o + 2] = (val >> 8) & 0xff; \
-		b[o + 3] = val & 0xff; \
-	} while (0);
-
-extern u8 _usb_bounce[];
-extern u8 _eusb_bounce[];
+extern uint8_t _usb_bounce[];
+extern uint8_t _eusb_bounce[];
 #define _usb_bounce_size (_eusb_bounce - _usb_bounce)
 
-extern u8 _rom_copy[];
-extern u8 _erom_copy[];
+extern uint8_t _rom_copy[];
+extern uint8_t _erom_copy[];
 #define _rom_copy_size (_erom_copy - _rom_copy)
 
-typedef struct {
+#define BOOTROM_RCM_TRANSPORT_ADDR	0x40003114
+
+/* The RCM struct of the BootROM */
+static const struct {
 	char is_usb3;
 	char init_hw_done;
 	char init_proto_done;
@@ -53,30 +48,38 @@ typedef struct {
 	int (*ep1_in_imm)(void *buffer, uint32_t size, uint32_t *num_xfer);
 
 	void *ep0_stall;
-} rcm_transport_t;
+} *rcm_transport = (void *)BOOTROM_RCM_TRANSPORT_ADDR;
 
-static const rcm_transport_t *rcm_transport = (rcm_transport_t *)0x40003114;
-
-static u32 rom_recvbuf(void *buffer, u32 size) {
-	u32 num_xfer;
+static uint32_t rom_recvbuf(void *buffer, uint32_t size)
+{
+	uint32_t num_xfer;
 	rcm_transport->ep1_out_imm(buffer, size, &num_xfer);
 	return num_xfer;
 }
 
-static u32 rom_sendbuf(void *buffer, u32 size) {
-	u32 num_xfer;
+static uint32_t rom_sendbuf(void *buffer, uint32_t size)
+{
+	uint32_t num_xfer;
 	rcm_transport->ep1_in_imm(buffer, size, &num_xfer);
 	return num_xfer;
 }
 
+static void bounce_bewrite32(uint32_t offset, uint32_t value)
+{
+	_usb_bounce[offset + 0] = (value >> 24) & 0xff;
+	_usb_bounce[offset + 1] = (value >> 16) & 0xff;
+	_usb_bounce[offset + 2] = (value >> 8) & 0xff;
+	_usb_bounce[offset + 3] = value & 0xff;
+}
+
 static ssize_t usb_readat(const struct region_device *rd, void *b,
-				size_t offset, size_t size)
+			  size_t offset, size_t size)
 {
 	size_t left = size;
 	size_t chunk;
 
-	UINT32TOBUF(_usb_bounce, 0, offset);
-	UINT32TOBUF(_usb_bounce, 4, size);
+	bounce_bewrite32(0, offset);
+	bounce_bewrite32(4, size);
 	rom_sendbuf(_usb_bounce, 8);
 
 	while (left > 0) {
@@ -98,14 +101,17 @@ static const struct region_device_ops usb_ops = {
 	.mmap = mmap_helper_rdev_mmap,
 	.munmap = mmap_helper_rdev_munmap,
 	.readat = usb_readat,
-}
-;
+};
+
 static struct mmap_helper_region_device mdev_usb =
 	MMAP_HELPER_REGION_INIT(&usb_ops, 0, CONFIG_ROM_SIZE);
 
 static struct mem_region_device mdev_sdram =
 	MEM_REGION_DEV_RO_INIT(_rom_copy, CONFIG_ROM_SIZE);
 
+/* romstage start out with USB but switches to SDRAM.
+ * ramstage uses SDRAM backed CBFS exclusively.
+ */
 #if ENV_RAMSTAGE
 static bool rom_in_sdram = true;
 #else
@@ -116,6 +122,7 @@ void cbfs_switch_to_sdram(void)
 {
 	usb_readat(&mdev_usb.rdev, _rom_copy, 0, CONFIG_ROM_SIZE);
 
+	/* Signal host with offset=0 and length=0 that we're done. */
 	memset(_usb_bounce, 0, 8);
 	rom_sendbuf(_usb_bounce, 8);
 

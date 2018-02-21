@@ -101,7 +101,7 @@ rmodules_arm-y += monotonic_timer.c
 
 CPPFLAGS_common += -Isrc/soc/nvidia/tegra210/include/
 
-ifeq ($(CONFIG_BOOTBLOCK_WRAP_BCT),y)
+ifeq ($(CONFIG_BCT_BOOT),y)
 # We want to grab the bootblock right before it goes into the image and wrap
 # it inside a BCT, but ideally we would do that without making special, one
 # use modifications to the main ARM Makefile. We do this in two ways. First,

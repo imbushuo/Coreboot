@@ -1,6 +1,7 @@
 ##
 ## This file is part of the coreboot project.
 ##
+## Copyright 2018 Andre Heider <a.heider@gmail.com>
 ## Copyright 2015 Google Inc.
 ## Copyright (c) 2015, NVIDIA CORPORATION.  All rights reserved.
 ##
