@@ -32,26 +32,21 @@ static const struct sdram_params sdram_configs[] = {
 #define FUSE_BASE		((void *)TEGRA_FUSE_BASE)
 #define  FUSE_RESERVED_ODM4	0x1d8
 
-static uint32_t switch_sdram_get_id(void)
+uint32_t ram_code(void)
 {
 	return (read32(FUSE_BASE + FUSE_RESERVED_ODM4) >> 3) & 7;
 }
 
 const struct sdram_params *get_sdram_config()
 {
-	uint32_t id = switch_sdram_get_id();
+	uint32_t rc = ram_code();
 
-	printk(BIOS_INFO, "Fuse SDRAM ID: %d\n", id);
+	printk(BIOS_INFO, "Fuse SDRAM code: %d\n", rc);
 
-	if (id >= ARRAY_SIZE(sdram_configs) ||
-		sdram_configs[id].MemoryType == NvBootMemoryType_Unused) {
-		die("Invalid SDRAM ID.");
+	if (rc >= ARRAY_SIZE(sdram_configs) ||
+		sdram_configs[rc].MemoryType == NvBootMemoryType_Unused) {
+		die("Invalid SDRAM code.");
 	}
 
-	return &sdram_configs[id];
-}
-
-uint32_t ram_code(void)
-{
-	return switch_sdram_get_id();
+	return &sdram_configs[rc];
 }

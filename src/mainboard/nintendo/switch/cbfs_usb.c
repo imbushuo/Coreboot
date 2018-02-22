@@ -14,11 +14,22 @@
  */
 
 #include <boot_device.h>
+#include <soc/addressmap.h>
 #include <string.h>
 #include <symbols.h>
 
-#include "cbfs_switch.h"
+#include "cbfs.h"
 
+/* This allows a USB firmware upload:
+ * The BootROM is used to exchange data with the host. Since ramstage runs
+ * on CCPLEX we need to make sure to use the BootROM only on BPMP.
+ * romstage switches to a SDRAM backed CBFS for that reason, and ramstage then
+ * uses that exclusively.
+ */
+
+#define BOOTROM_RCM_TRANSPORT_ADDR	(TEGRA_SRAM_BASE + 0x3114)
+
+/* The used memory regions as defined in memlayout.ld */
 extern uint8_t _usb_bounce[];
 extern uint8_t _eusb_bounce[];
 #define _usb_bounce_size (_eusb_bounce - _usb_bounce)
@@ -27,9 +38,7 @@ extern uint8_t _rom_copy[];
 extern uint8_t _erom_copy[];
 #define _rom_copy_size (_erom_copy - _rom_copy)
 
-#define BOOTROM_RCM_TRANSPORT_ADDR	0x40003114
-
-/* The RCM struct of the BootROM */
+/* The RCM USB transport struct of the BootROM */
 static const struct {
 	char is_usb3;
 	char init_hw_done;
@@ -78,16 +87,17 @@ static ssize_t usb_readat(const struct region_device *rd, void *b,
 	size_t left = size;
 	size_t chunk;
 
+	/* A request consists of 8 bytes:
+	 * - offset, unsigned 32bit
+	 * - size, unsigned 32bit
+	 * Each as big endian on the wire.
+	 */
 	bounce_bewrite32(0, offset);
 	bounce_bewrite32(4, size);
 	rom_sendbuf(_usb_bounce, 8);
 
 	while (left > 0) {
-		chunk = left;
-		if (chunk > _usb_bounce_size)
-			chunk = _usb_bounce_size;
-
-		chunk = rom_recvbuf(_usb_bounce, chunk);
+		chunk = rom_recvbuf(_usb_bounce, min(left, _usb_bounce_size));
 		memcpy(b, _usb_bounce, chunk);
 
 		b += chunk;
@@ -109,9 +119,6 @@ static struct mmap_helper_region_device mdev_usb =
 static struct mem_region_device mdev_sdram =
 	MEM_REGION_DEV_RO_INIT(_rom_copy, CONFIG_ROM_SIZE);
 
-/* romstage start out with USB but switches to SDRAM.
- * ramstage uses SDRAM backed CBFS exclusively.
- */
 #if ENV_RAMSTAGE
 static bool rom_in_sdram = true;
 #else

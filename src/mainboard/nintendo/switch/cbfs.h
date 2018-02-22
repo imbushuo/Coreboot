@@ -13,9 +13,9 @@
  * GNU General Public License for more details.
  */
 
-#ifndef __MAINBOARD_NINTENDO_SWITCH_CBFS_SWITCH_H__
-#define __MAINBOARD_NINTENDO_SWITCH_CBFS_SWITCH_H__
+#ifndef __MAINBOARD_NINTENDO_SWITCH_CBFS_H__
+#define __MAINBOARD_NINTENDO_SWITCH_CBFS_H__
 
 void cbfs_switch_to_sdram(void);
 
-#endif /* __MAINBOARD_NINTENDO_SWITCH_CBFS_SWITCH_H__ */
+#endif /* __MAINBOARD_NINTENDO_SWITCH_CBFS_H__ */

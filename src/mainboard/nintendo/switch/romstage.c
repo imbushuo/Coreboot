@@ -24,7 +24,7 @@
 #include <soc/padconfig.h>
 #include <soc/romstage.h>
 
-#include "cbfs_switch.h"
+#include "cbfs.h"
 #include "gpio.h"
 #include "pmic.h"
 

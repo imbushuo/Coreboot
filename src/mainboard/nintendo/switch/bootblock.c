@@ -113,7 +113,7 @@ void bootblock_mainboard_init(void)
 
 	soc_configure_funits(funits, ARRAY_SIZE(funits));
 
-	/* Reset PMIC so it works as expected on a warmboot */
+	/* PMIC requires a reset on a warmboot */
 	info->reset_func(info->reset_bit);
 	i2c_init(I2CPWR_BUS);
 	pmic_init(I2CPWR_BUS);
