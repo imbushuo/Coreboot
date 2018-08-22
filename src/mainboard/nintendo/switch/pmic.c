@@ -95,6 +95,10 @@ void pmic_init(unsigned bus)
 	/* CNFG1_L2 = 0xF2 for 3.3v, enabled */
 	pmic_write_reg_77620(bus, MAX77620_CNFG1_L2_REG, 0xf2, 1);
 
+	/* MAX77620: Turn on LDO1 to 1.05V for PEX power */
+	pmic_write_reg_77620(bus, MAX77620_CNFG1_L1_REG, 0xCA, 1);
+	pmic_write_reg_77620(bus, MAX77620_CNFG2_L1_REG, 0xCA, 1);
+
 	/* XXX MAX77621: Set VOUT_REG to 1.0V - CPU VREG */
 	pmic_write_reg_77621(bus, MAX77621_VOUT_REG, 0xB7, 1);
 
