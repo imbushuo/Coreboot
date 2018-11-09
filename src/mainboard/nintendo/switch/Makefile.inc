@@ -24,6 +24,8 @@ $(obj)/generated/bct.cfg:
 
 subdirs-y += bct
 
+CFLAGS_common += -Wno-unused-function
+
 bootblock-y += bootblock.c
 bootblock-y += pmic.c
 bootblock-y += reset.c
@@ -36,12 +38,26 @@ romstage-y += reset.c
 romstage-y += romstage.c
 romstage-y += sdram_configs.c
 romstage-y += cbfs_usb.c
+romstage-y += display.c
+romstage-y += gpio_romdump.c
+romstage-y += i2c_romstage.c
+romstage-y += max7762x.c
+romstage-y += pinmux.c
+romstage-y += timer.c
+romstage-y += util.c
 
 ramstage-y += mainboard.c
 ramstage-y += reset.c
 ramstage-y += pmic.c
 ramstage-y += sdram_configs.c
 ramstage-y += cbfs_usb.c
+ramstage-y += display.c
+ramstage-y += gpio_romdump.c
+ramstage-y += i2c.c
+ramstage-y += max7762x.c
+ramstage-y += pinmux.c
+ramstage-y += timer.c
+ramstage-y += util.c
 
 bootblock-y += memlayout.ld
 romstage-y += memlayout.ld

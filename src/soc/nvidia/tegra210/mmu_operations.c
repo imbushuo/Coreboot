@@ -27,18 +27,23 @@ static void tegra210_mmu_config(void)
 	const unsigned long devmem = MA_DEV | MA_S | MA_RW;
 	const unsigned long cachedmem = MA_MEM | MA_NS | MA_RW;
 	const unsigned long secure_mem = MA_MEM | MA_S | MA_RW;
+	const unsigned long uncachedmem = MA_MEM | MA_NS | MA_RW | MA_MEM_NC;
+
 	uintptr_t tz_base_mib;
 	size_t tz_size_mib;
 
 	print_carveouts();
 
-	memory_in_range_below_4gb(&start,&end);
+	memory_in_range_below_4gb(&start, &end);
 
 	/* Device memory below DRAM */
 	mmu_config_range((void *)TEGRA_ARM_LOWEST_PERIPH, start * MiB, devmem);
 
-	/* DRAM */
+	/* DRAM and FrameBuffer: FrameBuffer is right above the 1GB area, likely 4MB. */
 	mmu_config_range((void *)(start * MiB), (end-start) * MiB, cachedmem);
+
+	/* FrameBuffer: 0xc0000000, 4MB */
+	mmu_config_range((void *) 0xc0000000, 0x480000, uncachedmem);
 
 	memory_in_range_above_4gb(&start,&end);
 

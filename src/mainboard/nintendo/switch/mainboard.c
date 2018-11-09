@@ -37,6 +37,8 @@
 
 #include "gpio.h"
 #include "pmic.h"
+#include "display.h"
+#include "timer.h"
 
 static const struct pad_config padcfgs[] = {
 	PAD_CFG_GPIO_INPUT(USB_VBUS_EN1, PINMUX_PULL_NONE | PINMUX_PARKED |
@@ -130,28 +132,6 @@ static void configure_display_clocks(void)
 
 static int enable_lcd_vdd(void)
 {
-	/* Set 1.20V to power AVDD_DSI_CSI */
-	/* LD0: 1.20v CNF1: 0x0d */
-	pmic_write_reg_77620(I2CPWR_BUS, MAX77620_CNFG1_L0_REG, 0xd0, 1);
-
-	/* Enable VDD_LCD */
-	gpio_set(EN_VDD_LCD, 1);
-	/* wait for 2ms */
-	mdelay(2);
-
-	/* Enable PP1800_LCDIO to panel */
-	gpio_set(EN_VDD18_LCD, 1);
-	/* wait for 1ms */
-	mdelay(1);
-
-	/* Set panel EN and RST signals */
-	gpio_set(LCD_EN, 1);		/* enable */
-	/* wait for min 10ms */
-	mdelay(10);
-	gpio_set(LCD_RST_L, 1);		/* clear reset */
-	/* wait for min 3ms */
-	mdelay(3);
-
 	return 0;
 }
 
@@ -200,11 +180,19 @@ static void mainboard_init(device_t dev)
 	setup_audio();
 #endif
 
-	/* if panel needs to bringup */
-	if (display_init_required())
-		configure_display_blocks();
-
 	powergate_unused_partitions();
+
+	u32* fbsq_base = (void*) 0xc0000000;
+	for (int i = 0; i < 720; i++)
+    {
+        for (int j = 0; j < 600; j++)
+        {
+            *fbsq_base = RED;
+            fbsq_base++;
+        }
+    }
+
+	sleep(350000);
 }
 
 void display_startup(device_t dev)
