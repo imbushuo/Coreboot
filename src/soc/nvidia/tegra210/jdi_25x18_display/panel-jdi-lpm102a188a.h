@@ -12,8 +12,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-#ifndef _PANEL_JDI_LPM102A188A_H_
-#define _PANEL_JDI_LPM102A188A_H_
+#ifndef _PANEL_JDI_LPM062M326A_H_
+#define _PANEL_JDI_LPM062M326A_H_
 
 #define LP8557_MAX_BRIGHTNESS				0xFFF;
 

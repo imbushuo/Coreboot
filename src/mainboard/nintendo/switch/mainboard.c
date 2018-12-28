@@ -103,17 +103,6 @@ static void setup_audio(void)
 }
 #endif
 
-static const struct pad_config lcd_gpio_padcfgs[] = {
-	/* LCD_EN */
-	PAD_CFG_GPIO_OUT0(LCD_BL_EN, PINMUX_PULL_UP),
-	/* LCD_RST_L */
-	PAD_CFG_GPIO_OUT0(LCD_RST, PINMUX_PULL_UP),
-	/* EN_VDD_LCD */
-	PAD_CFG_GPIO_OUT0(NFC_EN, PINMUX_PULL_NONE),
-	/* EN_VDD18_LCD */
-	PAD_CFG_GPIO_OUT0(NFC_INT, PINMUX_PULL_NONE),
-};
-
 static void configure_display_clocks(void)
 {
 	u32 lclks = CLK_L_HOST1X | CLK_L_DISP1;	/* dc */
@@ -138,14 +127,7 @@ static int enable_lcd_vdd(void)
 static int configure_display_blocks(void)
 {
 	/* enable display related clocks */
-	configure_display_clocks();
-
-	/* configure panel gpio pads */
-	soc_configure_pads(lcd_gpio_padcfgs, ARRAY_SIZE(lcd_gpio_padcfgs));
-
-	/* set and enable panel related vdd */
-	if (enable_lcd_vdd())
-		return -1;
+	display_enable_backlight(1);
 
 	return 0;
 }
@@ -180,24 +162,16 @@ static void mainboard_init(device_t dev)
 	setup_audio();
 #endif
 
+	/* if panel needs to bringup */
+	if (display_init_required())
+		configure_display_blocks();
+
 	powergate_unused_partitions();
-
-	u32* fbsq_base = (void*) 0xc0000000;
-	for (int i = 0; i < 720; i++)
-    {
-        for (int j = 0; j < 600; j++)
-        {
-            *fbsq_base = RED;
-            fbsq_base++;
-        }
-    }
-
-	sleep(350000);
 }
 
 void display_startup(device_t dev)
 {
-	dsi_display_startup(dev);
+	// dsi_display_startup(dev);
 }
 
 static void mainboard_enable(device_t dev)

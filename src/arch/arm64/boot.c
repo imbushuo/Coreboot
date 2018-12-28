@@ -46,6 +46,7 @@ static void run_payload(struct prog *prog)
 		if (current_el != EL3)
 			doit(arg);
 		else {
+			doit(arg);
 			/* If current EL is EL3, we transition to payload in EL2. */
 			struct exc_state exc_state;
 			memset(&exc_state, 0, sizeof(exc_state));

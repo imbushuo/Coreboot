@@ -54,23 +54,8 @@ void romstage_mainboard_init(void)
 	cbfs_switch_to_sdram();
 
 	display_init();
-	display_enable_backlight(1);
-
-	// Early prep
-	memset((void*) 0xc0000000, (unsigned char) 0xff, 0x480000);
-	u32* lfb_base = display_init_framebuffer();
-    u32* fbsq_base = lfb_base;
-
-	for (int i = 0; i < 720; i++)
-    {
-        for (int j = 0; j < 900; j++)
-        {
-            *fbsq_base = CYAN;
-            fbsq_base++;
-        }
-    }
-
-	sleep(35000);
+	display_init_framebuffer();
+	memset((void*) 0xc0000000, 0x00, 0x480000);
 }
 
 void mainboard_configure_pmc(void)

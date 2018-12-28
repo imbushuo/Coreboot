@@ -43,17 +43,7 @@ int panel_jdi_prepare(struct panel_jdi *jdi)
 	if (ret < 0)
 		printk(BIOS_ERR, "failed to set column address: %d\n", ret);
 
-	ret = mipi_dsi_dcs_set_column_address(jdi->dsi->slave, 0,
-				jdi->mode->xres / 2 - 1);
-	if (ret < 0)
-		printk(BIOS_ERR, "failed to set column address: %d\n", ret);
-
 	ret = mipi_dsi_dcs_set_page_address(jdi->dsi, 0,
-				jdi->mode->yres - 1);
-	if (ret < 0)
-		printk(BIOS_ERR, "failed to set page address: %d\n", ret);
-
-	ret = mipi_dsi_dcs_set_page_address(jdi->dsi->slave, 0,
 				jdi->mode->yres - 1);
 	if (ret < 0)
 		printk(BIOS_ERR, "failed to set page address: %d\n", ret);
@@ -62,26 +52,12 @@ int panel_jdi_prepare(struct panel_jdi *jdi)
 	if (ret < 0)
 		printk(BIOS_ERR, "failed to set tear on: %d\n", ret);
 
-	ret = mipi_dsi_dcs_set_tear_on(jdi->dsi->slave,
-			MIPI_DSI_DCS_TEAR_MODE_VBLANK);
-	if (ret < 0)
-		printk(BIOS_ERR, "failed to set tear on: %d\n", ret);
-
 	ret = mipi_dsi_dcs_set_address_mode(jdi->dsi, false, false, false,
 			false, false, false, false, false);
 	if (ret < 0)
 		printk(BIOS_ERR, "failed to set address mode: %d\n", ret);
 
-	ret = mipi_dsi_dcs_set_address_mode(jdi->dsi->slave, false, false,
-			false, false, false, false, false, false);
-	if (ret < 0)
-		printk(BIOS_ERR, "failed to set address mode: %d\n", ret);
-
 	ret = mipi_dsi_dcs_set_pixel_format(jdi->dsi, 0x77);
-	if (ret < 0)
-		printk(BIOS_ERR, "failed to set pixel format: %d\n", ret);
-
-	ret = mipi_dsi_dcs_set_pixel_format(jdi->dsi->slave, 0x77);
 	if (ret < 0)
 		printk(BIOS_ERR, "failed to set pixel format: %d\n", ret);
 
@@ -90,18 +66,8 @@ int panel_jdi_prepare(struct panel_jdi *jdi)
 	if (ret < 0)
 		printk(BIOS_ERR, "failed to set 0x51: %d\n", ret);
 
-	data = 0xFF;
-	ret = mipi_dsi_dcs_write(jdi->dsi->slave, 0x51, &data, 1);
-	if (ret < 0)
-		printk(BIOS_ERR, "failed to set 0x51: %d\n", ret);
-
 	data = 0x24;
 	ret = mipi_dsi_dcs_write(jdi->dsi, 0x53, &data, 1);
-	if (ret < 0)
-		printk(BIOS_ERR, "failed to set 0x53: %d\n", ret);
-
-	data = 0x24;
-	ret = mipi_dsi_dcs_write(jdi->dsi->slave, 0x53, &data, 1);
 	if (ret < 0)
 		printk(BIOS_ERR, "failed to set 0x53: %d\n", ret);
 
@@ -110,27 +76,16 @@ int panel_jdi_prepare(struct panel_jdi *jdi)
 	if (ret < 0)
 		printk(BIOS_ERR, "failed to set 0x55: %d\n", ret);
 
-	data = 0x00;
-	ret = mipi_dsi_dcs_write(jdi->dsi->slave, 0x55, &data, 1);
-	if (ret < 0)
-		printk(BIOS_ERR, "failed to set 0x55: %d\n", ret);
-
 	ret = mipi_dsi_dcs_exit_sleep_mode(jdi->dsi);
 	if (ret < 0)
 		printk(BIOS_ERR, "failed to exit sleep mode: %d\n", ret);
 
-	ret = mipi_dsi_dcs_exit_sleep_mode(jdi->dsi->slave);
-	if (ret < 0)
-		printk(BIOS_ERR, "failed to exit sleep mode: %d\n", ret);
 	mdelay(150);
 
 	ret = mipi_dsi_dcs_set_display_on(jdi->dsi);
 	if (ret < 0)
 		printk(BIOS_ERR, "failed to set display on: %d\n", ret);
 
-	ret = mipi_dsi_dcs_set_display_on(jdi->dsi->slave);
-	if (ret < 0)
-		printk(BIOS_ERR, "failed to set display on: %d\n", ret);
 	mdelay(50);
 
 	jdi->enabled = true;

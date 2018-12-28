@@ -953,7 +953,7 @@ static int dsi_enable(struct soc_nvidia_tegra210_config *config)
 	tegra_dsi_init_regs(dsi_a);
 
 	/* prepare panel */
-	panel_jdi_prepare(dsi_a->panel);
+	// panel_jdi_prepare(dsi_a->panel);
 
 	/* enable dsi */
 	if (tegra_output_dsi_enable(dsi_a, config)) {
@@ -1025,10 +1025,12 @@ void dsi_display_startup(device_t dev)
 			__func__);
 		return;
 	}
+	
 
 	/* Set up window */
 	update_window(config);
 	printk(BIOS_INFO, "%s: display init done.\n", __func__);
+	return;
 
 	/* Save panel information to cb tables */
 	pass_mode_info_to_payload(config);
