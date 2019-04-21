@@ -55,7 +55,7 @@ void romstage_mainboard_init(void)
 
 	display_init();
 	display_init_framebuffer();
-	memset((void*) 0xc0000000, 0x00, 0x480000);
+	memset((void*) 0xdfb80000, 0x00, 0x480000);
 }
 
 void mainboard_configure_pmc(void)

@@ -39,11 +39,11 @@ static void tegra210_mmu_config(void)
 	/* Device memory below DRAM */
 	mmu_config_range((void *)TEGRA_ARM_LOWEST_PERIPH, start * MiB, devmem);
 
-	/* DRAM and FrameBuffer: FrameBuffer is right above the 1GB area, likely 4MB. */
+	/* DRAM and FrameBuffer */
 	mmu_config_range((void *)(start * MiB), (end-start) * MiB, cachedmem);
 
-	/* FrameBuffer: 0xc0000000, 4MB */
-	mmu_config_range((void *) 0xc0000000, 0x480000, uncachedmem);
+	/* FrameBuffer: 0xdfb80000, 4MB */
+	mmu_config_range((void *) 0xdfb80000, 0x480000, uncachedmem);
 
 	memory_in_range_above_4gb(&start,&end);
 

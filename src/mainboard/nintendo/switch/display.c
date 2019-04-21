@@ -143,12 +143,12 @@ void display_init(void)
 
 u32 *display_init_framebuffer(void)
 {
-	//This configures the framebuffer @ 0xC0000000 with a resolution of 1280x720 (line stride 768).
+	//This configures the framebuffer @ 0x801f0000 with a resolution of 1280x720 (line stride 768).
 	exec_cfg((u32 *)DISPLAY_A_BASE, cfg_display_framebuffer, ARRAY_SIZE_1(cfg_display_framebuffer));
 
 	sleep(35000);
 
-	return (u32 *) 0xC0000000;
+	return (u32 *) 0x801f0000;
 }
 
 void display_enable_backlight(u32 on) 

@@ -532,7 +532,7 @@ static const cfg_op_t cfg_display_framebuffer[32] = {
 	{DC_X_WIN_XD_LINE_STRIDE, 0x6000C00}, //768*2x768*4 (= 0x600 x 0xC00) bytes, see TRM for alignment requirements.
 	{0x702, 0},
 	{DC_X_WINBUF_XD_SURFACE_KIND, 0}, //Regular surface.
-	{DC_X_WINBUF_XD_START_ADDR, 0xC0000000}, //Framebuffer address.
+	{DC_X_WINBUF_XD_START_ADDR, 0xdfb80000}, //Framebuffer address.
 	{DC_X_WINBUF_XD_ADDR_H_OFFSET, 0},
 	{DC_X_WINBUF_XD_ADDR_V_OFFSET, 0},
 	{DC_X_WIN_XD_WIN_OPTIONS, 0},
