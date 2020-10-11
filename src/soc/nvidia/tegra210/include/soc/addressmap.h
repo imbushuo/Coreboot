@@ -104,7 +104,8 @@ enum {
 #define GPU_CARVEOUT_SIZE_MB		1
 #define NVDEC_CARVEOUT_SIZE_MB		1
 #define TSEC_CARVEOUT_SIZE_MB		2
-#define VPR_CARVEOUT_SIZE_MB		128
+// Well, we are not booting machine with video codec anyway
+#define VPR_CARVEOUT_SIZE_MB		1
 
 /* Return total size of DRAM memory configured on the platform. */
 int sdram_size_mb(void);
