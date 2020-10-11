@@ -529,7 +529,7 @@ static const cfg_op_t cfg_display_framebuffer[32] = {
 	{DC_X_WIN_XD_PRESCALED_SIZE, 0x5000B40}, //Pre-scaled size: 1280x2880 bytes (= 0x500 vertical lines x 0xB40 bytes).
 	{DC_X_WIN_XD_DDA_INCREMENT, 0x10001000},
 	{DC_X_WIN_XD_SIZE, 0x50002D0}, //Window size: 1280x720 (= 0x500 vertical lines x 0x2D0 horizontal pixels).
-	{DC_X_WIN_XD_LINE_STRIDE, 0x6000C00}, //768*2x768*4 (= 0x600 x 0xC00) bytes, see TRM for alignment requirements.
+	{DC_X_WIN_XD_LINE_STRIDE, 0x5A00B40}, //720*2x720*4 (= 0x600 x 0xC00) bytes, see TRM for alignment requirements.
 	{0x702, 0},
 	{DC_X_WINBUF_XD_SURFACE_KIND, 0}, //Regular surface.
 	{DC_X_WINBUF_XD_START_ADDR, 0xdfb80000}, //Framebuffer address.
